@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DINO-R: Explainable OOD Detection for Autonomous Vehicles</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8fa;
+      --border: #d0d7de;
+      --accent: #0969da;
+      --accent2: #1a7f37;
+      --text: #1f2328;
+      --muted: #656d76;
+      --tag-id: #0969da;
+      --tag-ood: #cf222e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(180deg, #f0f6ff 0%, #ffffff 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .hero .venue {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      max-width: 780px;
+      margin: 0 auto 20px;
+    }
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 32px;
+    }
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.8; }
+    .btn-primary { background: var(--accent); color: #ffffff; }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin-left: 8px;
+    }
+
+    /* ── Abstract ── */
+    .abstract-text {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 780px;
+    }
+    .abstract-text strong { color: var(--text); }
+
+    /* ── Highlights ── */
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 20px;
+    }
+    .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .card p { font-size: 0.88rem; color: var(--muted); }
+
+    /* ── Architecture ── */
+    .arch-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    /* ── Results table ── */
+    .table-wrap { overflow-x: auto; margin-top: 8px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    thead tr { background: var(--surface); }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    th { font-weight: 600; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:hover td { background: rgba(88, 166, 255, 0.04); }
+    .best { color: var(--accent2); font-weight: 700; }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tag-sup { background: rgba(9,105,218,0.1); color: #0550ae; }
+    .tag-uns { background: rgba(26,127,55,0.1); color: #116329; }
+
+    /* ── Examples ── */
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .example-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .example-label {
+      padding: 10px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .label-id { background: rgba(9,105,218,0.1); color: #0550ae; }
+    .label-ood { background: rgba(207,34,46,0.1); color: #a40e26; }
+    .example-card img { width: 100%; display: block; }
+
+    /* ── Video Section ── */
+    .video-dataset { margin-bottom: 52px; }
+    .video-dataset:last-child { margin-bottom: 0; }
+    .dataset-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .dataset-badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .badge-id { background: rgba(9,105,218,0.1); color: #0550ae; border: 1px solid rgba(9,105,218,0.3); }
+    .badge-ood { background: rgba(207,34,46,0.1); color: #a40e26; border: 1px solid rgba(207,34,46,0.3); }
+    .dataset-title { font-size: 1.05rem; font-weight: 600; }
+    .dataset-desc { font-size: 0.875rem; color: var(--muted); margin-bottom: 18px; }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+
+    .video-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .video-item video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: #000;
+    }
+    .video-caption {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Code block ── */
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      margin-top: 12px;
+    }
+    code { font-family: "SFMono-Regular", Consolas, monospace; color: var(--text); }
+    .comment { color: var(--muted); }
+    .cmd { color: var(--accent); }
+
+    /* ── Acknowledgment ── */
+    .ack { font-size: 0.9rem; color: var(--muted); }
+    .ack a { color: var(--accent); text-decoration: none; }
+    .ack a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<div class="hero">
+  <div class="venue">Autonomous Vehicles · Safety AI</div>
+  <h1>DINO-R: Explainable Out-of-Distribution Detection for Autonomous Vehicles</h1>
+  <p class="subtitle">
+    A lightweight, interpretable OOD detection framework leveraging frozen DINOv3 features
+    and Monte-Carlo masking to produce pixel-level anomaly maps in real driving scenes.
+  </p>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://github.com/RoboSafe-Lab/DINO-R" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a class="btn btn-secondary" href="#results">Results</a>
+    <a class="btn btn-secondary" href="#videos">Video Demo</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ═══════════════════════════ ABSTRACT ═══════════════════════════ -->
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <p class="abstract-text">
+      Reliable deployment of autonomous vehicles requires detecting
+      <strong>out-of-distribution (OOD) scenarios</strong> — road conditions,
+      objects, or weather events not seen during training — before they cause safety failures.
+      DINO-R addresses this with a two-stage approach: frozen <strong>DINOv3 patch tokens</strong>
+      encode rich scene semantics, while a small trainable <strong>transformer reconstructor</strong>
+      is trained exclusively on in-distribution (ID) driving scenes.
+      At inference, Monte-Carlo masking produces stable <strong>pixel-level anomaly heatmaps</strong>,
+      surfacing exactly which image regions drive the OOD decision.
+      Evaluated against 10 competing methods on the SegmentMeIfYouCan benchmark,
+      DINO-R achieves <strong>AUROC 0.9945</strong> and <strong>FPR@95 0.0302</strong> —
+      state-of-the-art among both supervised and unsupervised approaches.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════ HIGHLIGHTS ═══════════════════════════ -->
+  <section id="highlights">
+    <h2>Key Highlights</h2>
+    <div class="highlights">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Lightweight Architecture</h3>
+        <p>Frozen DINOv3 patch tokens paired with a minimal trainable transformer reconstructor. No large fine-tuning required.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h3>Unsupervised ID Training</h3>
+        <p>Learns purely from in-distribution driving scenes. No OOD data is ever needed for training or threshold calibration.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗺️</div>
+        <h3>High Interpretability</h3>
+        <p>Monte-Carlo masking generates pixel-level anomaly maps, showing exactly <em>why</em> a frame is flagged as OOD.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ ARCHITECTURE ═══════════════════════════ -->
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <img class="arch-img" src="images/DINO-R.png" alt="DINO-R architecture diagram" />
+  </section>
+
+  <!-- ═══════════════════════════ RESULTS ═══════════════════════════ -->
+  <section id="results">
+    <h2>Experimental Results</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;">
+      Evaluated on <strong style="color:var(--text)">RoadAnomaly21</strong> and
+      <strong style="color:var(--text)">RoadObstacle21</strong> from the SegmentMeIfYouCan benchmark,
+      with Cityscapes as the ID training set.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Method</th>
+            <th>AUROC ↑</th>
+            <th>FPR@95 ↓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>MSP</td><td>0.4840</td><td>0.9148</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>MaxLogit</td><td>0.4322</td><td>0.9410</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>Energy</td><td>0.4052</td><td>0.9403</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>Energy + React</td><td>0.4085</td><td>0.9390</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>ViM</td><td>0.9939</td><td>0.0400</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>GradNorm</td><td>0.4343</td><td>0.9239</td></tr>
+          <tr><td><span class="tag tag-sup">Supervised</span></td><td>KL-Matching</td><td>0.5298</td><td>0.8866</td></tr>
+          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>DINO-K (kNN, k=1)</td><td>0.9820</td><td>0.0695</td></tr>
+          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>DINO-M (Mahalanobis)</td><td>0.9907</td><td>0.0439</td></tr>
+          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>MOOD-R (Pixel Recon.)</td><td>0.8038</td><td>0.6354</td></tr>
+          <tr>
+            <td><span class="tag tag-uns">Unsupervised</span></td>
+            <td><strong>DINO-R (Feature Recon.)</strong></td>
+            <td class="best">0.9945</td>
+            <td class="best">0.0302</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Example images -->
+    <div style="margin-top: 36px;">
+      <h3 style="font-size:1rem;font-weight:600;margin-bottom:14px;">Qualitative Examples</h3>
+      <div class="example-grid">
+        <div class="example-card">
+          <div class="example-label label-id">ID — In-Distribution Scene</div>
+          <img src="images/id1_grid.png" alt="ID example with anomaly heatmap" />
+        </div>
+        <div class="example-card">
+          <div class="example-label label-ood">OOD — Out-of-Distribution Scene</div>
+          <img src="images/ood1_grid.png" alt="OOD example with anomaly heatmap" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ VIDEOS ═══════════════════════════ -->
+  <section id="videos">
+    <h2>Video Inference Demo</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:36px;">
+      Each video shows the original frame alongside the real-time anomaly heatmap produced by DINO-R.
+      Warmer colors (red/orange) indicate higher anomaly scores.
+    </p>
+
+    <!-- ── Dataset 1: Cityscapes ── -->
+    <div class="video-dataset">
+      <div class="dataset-header">
+        <span class="dataset-badge badge-id">ID Dataset</span>
+        <span class="dataset-title">Cityscapes — Demo Videos</span>
+      </div>
+      <p class="dataset-desc">
+        Cityscapes contains urban driving footage from German cities, used as the in-distribution training set.
+        The heatmap stays cool (low anomaly score) on familiar street scenes, with occasional warm spikes on
+        unusual objects.
+      </p>
+      <div class="video-grid">
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/cityscapes/00.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">Cityscapes Demo — Clip 1</div>
+        </div>
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/cityscapes/01.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">Cityscapes Demo — Clip 2</div>
+        </div>
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/cityscapes/02.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">Cityscapes Demo — Clip 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Dataset 2: RoadAnomaly21 / RoadObstacle21 ── -->
+    <div class="video-dataset">
+      <div class="dataset-header">
+        <span class="dataset-badge badge-ood">OOD Dataset</span>
+        <span class="dataset-title">SegmentMeIfYouCan — RoadAnomaly21 / RoadObstacle21</span>
+      </div>
+      <p class="dataset-desc">
+        The SegmentMeIfYouCan benchmark provides real-world footage of unexpected road obstacles and anomalies
+        — animals, debris, unusual objects — that were never seen during training.
+        DINO-R consistently produces intense heatmaps over the anomalous regions.
+      </p>
+      <div class="video-grid">
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/ood/cabc30fc-eb673c5a.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">OOD Sequence — cabc30fc</div>
+        </div>
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/ood/cac07407-76e4c968.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">OOD Sequence — cac07407</div>
+        </div>
+        <div class="video-item">
+          <video controls muted loop playsinline>
+            <source src="videos/ood/caf380ad-52f6a603.mp4" type="video/mp4" />
+          </video>
+          <div class="video-caption">OOD Sequence — caf380ad</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ ACKNOWLEDGMENT ═══════════════════════════ -->
+  <section id="acknowledgment">
+    <h2>Acknowledgment</h2>
+    <p class="ack">
+      This research utilizes the <a href="https://github.com/facebookresearch/dinov3" target="_blank">DINOv3</a>
+      model provided by Meta AI. Anomaly benchmark datasets are sourced from the
+      <a href="https://segmentmeifyoucan.com/" target="_blank">SegmentMeIfYouCan</a> benchmark.
+      The in-distribution training set uses
+      <a href="https://www.cityscapes-dataset.com/" target="_blank">Cityscapes</a>.
+      By using this software, you may also be bound by the
+      <a href="https://github.com/facebookresearch/dinov3/blob/main/LICENSE.md" target="_blank">DINOv3 License</a>.
+    </p>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>
+    DINO-R &nbsp;·&nbsp;
+    <a href="https://github.com/RoboSafe-Lab/DINO-R" target="_blank">GitHub</a>
+    &nbsp;·&nbsp; RoboSafe Lab
+  </p>
+</footer>
+
+</body>
+</html>
