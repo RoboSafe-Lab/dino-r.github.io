@@ -224,53 +224,267 @@
     .label-ood { background: rgba(207,34,46,0.1); color: #a40e26; }
     .example-card img { width: 100%; display: block; }
 
-    /* ── Video Section ── */
-    .video-dataset { margin-bottom: 52px; }
-    .video-dataset:last-child { margin-bottom: 0; }
-    .dataset-header {
+    /* ══════════════════════════════════════════
+       Interactive Video Player
+    ══════════════════════════════════════════ */
+
+    /* Tab strip */
+    .vp-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .vp-tab {
+      position: relative;
+      bottom: -2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 22px 12px;
+      border: 1.5px solid var(--border);
+      border-bottom: none;
+      border-radius: 9px 9px 0 0;
+      background: #eef0f3;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      user-select: none;
+      letter-spacing: 0.01em;
+    }
+    .vp-tab:hover {
+      background: #e1e4e8;
+      color: var(--text);
+    }
+    .vp-tab.active {
+      background: #fff;
+      color: var(--accent);
+      border-bottom-color: #fff;
+      box-shadow: 0 -3px 10px rgba(9,105,218,0.1);
+      z-index: 1;
+    }
+
+    /* Dataset description line */
+    .vp-ds-line {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 20px;
+      min-height: 22px;
+      transition: opacity 0.2s;
+    }
+
+    /* Outer player card */
+    .vp-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    /* Stage row: [prev-btn] [video] [next-btn] */
+    .vp-stage-row {
+      display: flex;
+      align-items: stretch;
+      background: #0a0a0a;
+    }
+
+    .vp-nav {
+      flex-shrink: 0;
+      width: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.4);
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.6);
+      transition: background 0.18s, color 0.18s;
+      padding: 0;
+    }
+    .vp-nav:hover {
+      background: rgba(9,105,218,0.75);
+      color: #fff;
+    }
+    .vp-nav:active { opacity: 0.82; }
+    .vp-nav svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.5;
+    }
+
+    .vp-stage {
+      flex: 1;
+      background: #0a0a0a;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+    }
+    .vp-stage video {
+      width: 100%;
+      display: block;
+      max-height: 540px;
+      object-fit: contain;
+    }
+
+    /* Controls bar */
+    .vp-bar {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
-    }
-    .dataset-badge {
-      display: inline-block;
-      padding: 3px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-    .badge-id { background: rgba(9,105,218,0.1); color: #0550ae; border: 1px solid rgba(9,105,218,0.3); }
-    .badge-ood { background: rgba(207,34,46,0.1); color: #a40e26; border: 1px solid rgba(207,34,46,0.3); }
-    .dataset-title { font-size: 1.05rem; font-weight: 600; }
-    .dataset-desc { font-size: 0.875rem; color: var(--muted); margin-bottom: 18px; }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
-
-    .video-item {
+      padding: 13px 20px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
+      border-top: 1px solid var(--border);
     }
-    .video-item video {
-      width: 100%;
-      display: block;
-      background: #000;
+    .vp-bar-left, .vp-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
-    .video-caption {
-      padding: 8px 12px;
+    .vp-bar-right  { justify-content: flex-end; }
+    .vp-bar-center { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+    .vp-ctrl-label {
       font-size: 0.8rem;
       color: var(--muted);
-      text-align: center;
-      border-top: 1px solid var(--border);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Custom select dropdown */
+    .vp-sel-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .vp-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      padding: 5px 28px 5px 11px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .vp-select:hover { border-color: var(--accent); }
+    .vp-select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(9,105,218,0.14);
+    }
+    .vp-sel-ico {
+      position: absolute;
+      right: 8px;
+      pointer-events: none;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Fullscreen button */
+    .vp-fullscreen-btn {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      padding: 0;
+    }
+    .vp-fullscreen-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(9,105,218,0.06);
+    }
+    .vp-fullscreen-btn svg { width: 16px; height: 16px; stroke-width: 2; }
+
+    /* Play / Pause button */
+    .vp-play-btn {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+      padding: 0;
+    }
+    .vp-play-btn:hover { background: #0857b5; }
+    .vp-play-btn:active { transform: scale(0.92); }
+    .vp-play-btn svg { width: 13px; height: 13px; fill: currentColor; }
+    .vp-play-btn .icon-pause { display: none; }
+    .vp-play-btn.playing .icon-play  { display: none; }
+    .vp-play-btn.playing .icon-pause { display: block; }
+
+    /* Timeline */
+    .vp-timeline {
+      flex: 1;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .vp-tl-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      position: relative;
+      transition: height 0.15s;
+    }
+    .vp-timeline:hover .vp-tl-track,
+    .vp-timeline.dragging .vp-tl-track { height: 6px; }
+
+    .vp-tl-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .vp-tl-thumb {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+      transition: transform 0.15s;
+    }
+    .vp-timeline:hover .vp-tl-thumb,
+    .vp-timeline.dragging .vp-tl-thumb { transform: translate(-50%, -50%) scale(1); }
+
+    @media (max-width: 600px) {
+      .vp-tab { padding: 8px 14px 10px; font-size: 0.82rem; }
+      .vp-nav { width: 40px; }
+      .vp-ctrl-label { display: none; }
+      .vp-bar { padding: 10px 12px; gap: 8px; }
     }
 
     /* ── Code block ── */
@@ -309,7 +523,7 @@
 <div class="hero">
   <h1>DINO-R: Explainable Out-of-Distribution Detection for Autonomous Vehicles</h1>
   <div class="author-block">
-    <p class="authors">Jiamin Yin · Tianzi Chen · Yuanru Yang · Yizhuo Xiao · Cheng Wang</p>
+    <p class="authors">Jiamin Yin · Tianzi Chen · Yuanru Yang · Taohong Zheng · Yizhuo Xiao · Ning Zhang · Cheng Wang</p>
     <p class="affiliation">Heriot-Watt University</p>
     <p class="equal-contrib">* Jiamin Yin and Tianzi Chen contribute equally</p>
   </div>
@@ -368,66 +582,81 @@
   <!-- ═══════════════════════════ VIDEOS ═══════════════════════════ -->
   <section id="videos">
     <h2>Video Inference Demo</h2>
-    <p style="color:var(--muted);font-size:.9rem;margin-bottom:36px;">
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:28px;max-width:700px;">
       Each video shows the original frame alongside the real-time anomaly heatmap produced by DINO-R.
-      Warmer colors (red/orange) indicate higher anomaly scores.
+      Warmer colors (red/orange) indicate higher anomaly scores. Select a dataset below, then navigate between clips.
     </p>
 
-    <!-- ── Dataset 1: Cityscapes ── -->
-    <div class="video-dataset">
-      <div class="dataset-header">
-        <span class="dataset-badge badge-id">Cityscapes</span>
+    <!-- ── Dataset tabs (built dynamically from videos.json) ── -->
+    <div class="vp-tabs" role="tablist" aria-label="Dataset selection"></div>
+
+    <!-- ── Dataset description ── -->
+    <p class="vp-ds-line" id="vpDsDesc">Loading…</p>
+
+    <!-- ── Player card ── -->
+    <div class="vp-card">
+
+      <!-- Stage: prev-nav | video | next-nav -->
+      <div class="vp-stage-row">
+        <button class="vp-nav" id="vpPrev" aria-label="Previous video">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="vp-stage">
+          <video id="vpVideo" autoplay muted loop playsinline></video>
+        </div>
+
+        <button class="vp-nav" id="vpNext" aria-label="Next video">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
 
-      <div class="video-grid">
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/cityscapes/00.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 8.35%</div>
-        </div>
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/cityscapes/01.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 0.00%</div>
-        </div>
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/cityscapes/02.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 24.08%</div>
-        </div>
-      </div>
-    </div>
+      <!-- Controls bar: [dropdown] [play + progress] [fullscreen] -->
+      <div class="vp-bar">
 
-    <!-- ── Dataset 2: RoadAnomaly21 / RoadObstacle21 ── -->
-    <div class="video-dataset">
-      <div class="dataset-header">
-        <span class="dataset-badge badge-ood">bdd100k</span>
+        <div class="vp-bar-left">
+          <span class="vp-ctrl-label">Video</span>
+          <div class="vp-sel-wrap">
+            <select id="vpSelect" class="vp-select"></select>
+            <span class="vp-sel-ico">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="vp-bar-center">
+          <button class="vp-play-btn" id="vpPlayBtn" aria-label="Play / Pause">
+            <svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <div class="vp-timeline" id="vpTimeline">
+            <div class="vp-tl-track">
+              <div class="vp-tl-fill" id="vpFill"></div>
+              <div class="vp-tl-thumb" id="vpThumb"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vp-bar-right">
+          <button class="vp-fullscreen-btn" id="vpFullscreen" aria-label="Fullscreen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
+        </div>
+
       </div>
 
-      <div class="video-grid">
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/bdd100k/cabc30fc-eb673c5a.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 100%</div>
-        </div>
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/bdd100k/cac07407-76e4c968.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 100%</div>
-        </div>
-        <div class="video-item">
-          <video autoplay muted loop playsinline>
-            <source src="videos/bdd100k/caf380ad-52f6a603.mp4" type="video/mp4" />
-          </video>
-          <div class="video-caption">OOD Rate: 100%</div>
-        </div>
-      </div>
-    </div>
+    </div><!-- /.vp-card -->
   </section>
 
   <!-- ═══════════════════════════ RESULTS ═══════════════════════════ -->
@@ -479,6 +708,193 @@
     &nbsp;·&nbsp; Heriot-Watt University RoboSafe Lab
   </p>
 </footer>
+
+<script>
+(function () {
+  /* ── State ── */
+  var DATASETS = [];
+  var state = { dsIdx: 0, vidIdx: 0 };
+
+  /* ── DOM refs ── */
+  var videoEl       = document.getElementById('vpVideo');
+  var dsDescEl      = document.getElementById('vpDsDesc');
+  var selectEl      = document.getElementById('vpSelect');
+  var prevBtn       = document.getElementById('vpPrev');
+  var nextBtn       = document.getElementById('vpNext');
+  var tabsContainer = document.querySelector('.vp-tabs');
+  var playBtn       = document.getElementById('vpPlayBtn');
+  var timelineEl    = document.getElementById('vpTimeline');
+  var fillEl        = document.getElementById('vpFill');
+  var thumbEl       = document.getElementById('vpThumb');
+  var fullscreenBtn = document.getElementById('vpFullscreen');
+
+  /* ── Progress bar ── */
+  function setProgress(pct) {
+    var p = (pct * 100).toFixed(2) + '%';
+    fillEl.style.width = p;
+    thumbEl.style.left = p;
+  }
+
+  function seekFromEvent(e) {
+    var track = timelineEl.querySelector('.vp-tl-track');
+    var rect  = track.getBoundingClientRect();
+    var cx    = e.touches ? e.touches[0].clientX : e.clientX;
+    var pct   = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
+    setProgress(pct);
+    if (videoEl.duration) videoEl.currentTime = pct * videoEl.duration;
+  }
+
+  videoEl.addEventListener('timeupdate', function () {
+    if (videoEl.duration) setProgress(videoEl.currentTime / videoEl.duration);
+  });
+
+  /* ── Play / Pause sync ── */
+  videoEl.addEventListener('play',  function () { playBtn.classList.add('playing'); });
+  videoEl.addEventListener('pause', function () { playBtn.classList.remove('playing'); });
+  videoEl.addEventListener('ended', function () { playBtn.classList.remove('playing'); });
+
+  playBtn.addEventListener('click', function () {
+    if (videoEl.paused) { videoEl.play(); } else { videoEl.pause(); }
+  });
+
+  /* ── Timeline drag (mouse) ── */
+  var dragging = false;
+  timelineEl.addEventListener('mousedown', function (e) {
+    dragging = true;
+    timelineEl.classList.add('dragging');
+    seekFromEvent(e);
+  });
+  document.addEventListener('mousemove', function (e) {
+    if (dragging) seekFromEvent(e);
+  });
+  document.addEventListener('mouseup', function () {
+    if (dragging) { dragging = false; timelineEl.classList.remove('dragging'); }
+  });
+
+  /* ── Timeline drag (touch) ── */
+  timelineEl.addEventListener('touchstart', function (e) {
+    timelineEl.classList.add('dragging');
+    seekFromEvent(e); e.preventDefault();
+  }, { passive: false });
+  timelineEl.addEventListener('touchmove', function (e) {
+    seekFromEvent(e); e.preventDefault();
+  }, { passive: false });
+  timelineEl.addEventListener('touchend', function () {
+    timelineEl.classList.remove('dragging');
+  });
+
+  /* ── Fullscreen ── */
+  fullscreenBtn.addEventListener('click', function () {
+    videoEl.setAttribute('controls', '');
+    var req = videoEl.requestFullscreen || videoEl.webkitRequestFullscreen || videoEl.mozRequestFullScreen;
+    if (req) req.call(videoEl).catch(function () {});
+  });
+  function onFsChange() {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      videoEl.removeAttribute('controls');
+    }
+  }
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+
+  /* ── Video loader ── */
+  function loadVideo() {
+    var vid = DATASETS[state.dsIdx].videos[state.vidIdx];
+    setProgress(0);
+    videoEl.src = vid.src;
+    videoEl.load();
+    videoEl.play().catch(function () {});
+  }
+
+  /* ── Rebuild dropdown ── */
+  function rebuildSelect() {
+    var vids = DATASETS[state.dsIdx].videos;
+    selectEl.innerHTML = vids.map(function (_, i) {
+      return '<option value="' + i + '">Video ' + i + '</option>';
+    }).join('');
+    selectEl.value = state.vidIdx;
+  }
+
+  /* ── Rebuild tab strip from DATASETS ── */
+  function rebuildTabs() {
+    tabsContainer.innerHTML = DATASETS.map(function (ds, i) {
+      var active = i === state.dsIdx;
+      return '<button class="vp-tab' + (active ? ' active' : '') +
+             '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">' +
+             ds.label + '</button>';
+    }).join('');
+
+    tabsContainer.querySelectorAll('.vp-tab').forEach(function (tab, i) {
+      tab.addEventListener('click', function () {
+        if (state.dsIdx === i) return;
+        state.dsIdx  = i;
+        state.vidIdx = 0;
+        refresh();
+      });
+    });
+  }
+
+  /* ── Sync active tab highlight + description ── */
+  function syncTabs() {
+    tabsContainer.querySelectorAll('.vp-tab').forEach(function (tab, i) {
+      var active = i === state.dsIdx;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    dsDescEl.textContent = DATASETS[state.dsIdx].desc || '';
+  }
+
+  /* ── Full re-render ── */
+  function refresh() {
+    syncTabs();
+    rebuildSelect();
+    loadVideo();
+  }
+
+  /* ── Prev / Next buttons ── */
+  prevBtn.addEventListener('click', function () {
+    if (!DATASETS.length) return;
+    var len = DATASETS[state.dsIdx].videos.length;
+    state.vidIdx = (state.vidIdx - 1 + len) % len;
+    rebuildSelect(); loadVideo();
+  });
+  nextBtn.addEventListener('click', function () {
+    if (!DATASETS.length) return;
+    var len = DATASETS[state.dsIdx].videos.length;
+    state.vidIdx = (state.vidIdx + 1) % len;
+    rebuildSelect(); loadVideo();
+  });
+
+  /* ── Dropdown change ── */
+  selectEl.addEventListener('change', function () {
+    state.vidIdx = parseInt(selectEl.value, 10);
+    loadVideo();
+  });
+
+  /* ── Bootstrap: fetch videos.json ── */
+  fetch('videos.json')
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      DATASETS = data.datasets || [];
+      if (!DATASETS.length) {
+        dsDescEl.textContent = 'No datasets found in videos.json.';
+        return;
+      }
+      rebuildTabs();
+      refresh();
+    })
+    .catch(function (err) {
+      console.error('Could not load videos.json:', err);
+      dsDescEl.textContent =
+        'Failed to load video index. ' +
+        'Serve this page via HTTP (e.g. python -m http.server) and ensure videos.json exists.';
+    });
+
+})();
+</script>
 
 </body>
 </html>

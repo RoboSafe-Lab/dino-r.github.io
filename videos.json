@@ -1,0 +1,34 @@
+{
+  "datasets": [
+    {
+      "id": "cityscapes",
+      "label": "Cityscapes",
+      "desc": "Urban driving scenes from European cities — used as in-distribution training data.",
+      "videos": [
+        { "src": "videos/cityscapes/cityscapes_00_ood.mp4" },
+        { "src": "videos/cityscapes/cityscapes_01_ood.mp4" },
+        { "src": "videos/cityscapes/cityscapes_02_ood.mp4" }
+      ]
+    },
+    {
+      "id": "nuscenes",
+      "label": "nuScenes",
+      "desc": "Multi-camera autonomous driving sequences from diverse driving environments.",
+      "videos": [
+        { "src": "videos/nuscenes/n008_CAM_FRONT_part00_ood.mp4" },
+        { "src": "videos/nuscenes/n008_CAM_FRONT_part01_ood.mp4" },
+        { "src": "videos/nuscenes/n008_CAM_FRONT_part02_ood.mp4" }
+      ]
+    },
+    {
+      "id": "bdd100k",
+      "label": "bdd100k",
+      "desc": "Large-scale driving video dataset with diverse weather and lighting conditions.",
+      "videos": [
+        { "src": "videos/bdd100k/n008_CAM_FRONT_part03_ood.mp4" },
+        { "src": "videos/bdd100k/n008_CAM_FRONT_part04_ood.mp4" },
+        { "src": "videos/bdd100k/n008_CAM_FRONT_part05_ood.mp4" }
+      ]
+    }
+  ]
+}
