@@ -3,31 +3,64 @@
     {
       "id": "cityscapes",
       "label": "Cityscapes",
-      "desc": "Urban driving scenes from European cities — used as in-distribution training data.",
+      "desc": "",
       "videos": [
-        { "src": "videos/cityscapes/cityscapes_00_ood.mp4" },
-        { "src": "videos/cityscapes/cityscapes_01_ood.mp4" },
-        { "src": "videos/cityscapes/cityscapes_02_ood.mp4" }
+        {
+          "src": "videos/cityscapes/cityscapes_00_ood.mp4"
+        },
+        {
+          "src": "videos/cityscapes/cityscapes_01_ood.mp4"
+        },
+        {
+          "src": "videos/cityscapes/cityscapes_02_ood.mp4"
+        }
       ]
     },
     {
       "id": "nuscenes",
       "label": "nuScenes",
-      "desc": "Multi-camera autonomous driving sequences from diverse driving environments.",
+      "desc": "",
       "videos": [
-        { "src": "videos/nuscenes/n008_CAM_FRONT_part00_ood.mp4" },
-        { "src": "videos/nuscenes/n008_CAM_FRONT_part01_ood.mp4" },
-        { "src": "videos/nuscenes/n008_CAM_FRONT_part02_ood.mp4" }
+        {
+          "src": "videos/nuscenes/n008_CAM_FRONT_part00_ood.mp4"
+        },
+        {
+          "src": "videos/nuscenes/n008_CAM_FRONT_part01_ood.mp4"
+        },
+        {
+          "src": "videos/nuscenes/n008_CAM_FRONT_part02_ood.mp4"
+        }
       ]
     },
     {
       "id": "bdd100k",
       "label": "bdd100k",
-      "desc": "Large-scale driving video dataset with diverse weather and lighting conditions.",
+      "desc": "",
       "videos": [
-        { "src": "videos/bdd100k/n008_CAM_FRONT_part03_ood.mp4" },
-        { "src": "videos/bdd100k/n008_CAM_FRONT_part04_ood.mp4" },
-        { "src": "videos/bdd100k/n008_CAM_FRONT_part05_ood.mp4" }
+        {
+          "src": "videos/bdd100k/0.mp4"
+        },
+        {
+          "src": "videos/bdd100k/1.mp4"
+        },
+        {
+          "src": "videos/bdd100k/2.mp4"
+        },
+        {
+          "src": "videos/bdd100k/3.mp4"
+        },
+        {
+          "src": "videos/bdd100k/4.mp4"
+        },
+        {
+          "src": "videos/bdd100k/5.mp4"
+        },
+        {
+          "src": "videos/bdd100k/6.mp4"
+        },
+        {
+          "src": "videos/bdd100k/7.mp4"
+        }
       ]
     }
   ]

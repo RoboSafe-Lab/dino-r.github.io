@@ -33,15 +33,15 @@ from pathlib import Path
 DATASET_META: dict[str, dict] = {
     "cityscapes": {
         "label": "Cityscapes",
-        "desc":  "Urban driving scenes from European cities — used as in-distribution training data.",
+        "desc":  "",
     },
     "nuscenes": {
         "label": "nuScenes",
-        "desc":  "Multi-camera autonomous driving sequences from diverse driving environments.",
+        "desc":  "",
     },
     "bdd100k": {
         "label": "bdd100k",
-        "desc":  "Large-scale driving video dataset with diverse weather and lighting conditions.",
+        "desc":  "",
     },
 }
 

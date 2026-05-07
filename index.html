@@ -23,6 +23,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 17px;
       line-height: 1.65;
     }
 
@@ -46,16 +47,16 @@
       margin-bottom: 20px;
     }
     .hero h1 {
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-size: clamp(1.9rem, 4vw, 3rem);
       font-weight: 700;
       line-height: 1.2;
-      max-width: 780px;
+      max-width: 960px;
       margin: 0 auto 20px;
     }
     .hero .subtitle {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       color: var(--muted);
-      max-width: 620px;
+      max-width: 760px;
       margin: 0 auto 32px;
     }
     .btn-row {
@@ -93,12 +94,12 @@
       line-height: 1.4;
     }
     .authors {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
     .affiliation {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--muted);
       margin-bottom: 8px;
     }
@@ -110,15 +111,15 @@
 
     /* ── Layout ── */
     .container {
-      max-width: 960px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 40px;
     }
 
     section { padding: 64px 0; }
 
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 28px;
       display: flex;
@@ -135,11 +136,22 @@
 
     /* ── Abstract ── */
     .abstract-text {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--muted);
-      max-width: 780px;
+      max-width: 980px;
+      margin-bottom: 28px;
     }
     .abstract-text strong { color: var(--text); }
+
+    /* ── Example image caption ── */
+    .example-caption {
+      padding: 14px 18px 16px;
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.75;
+      border-top: 1px solid var(--border);
+    }
+    .example-caption strong { color: var(--text); }
 
     /* ── Highlights ── */
     .highlights {
@@ -154,22 +166,22 @@
       border-radius: 10px;
       padding: 22px 20px;
     }
-    .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
-    .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
-    .card p { font-size: 0.88rem; color: var(--muted); }
+    .card-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .card p { font-size: 0.93rem; color: var(--muted); }
 
     /* ── Architecture ── */
     .arch-wrap {
       margin-top: 8px;
-      margin-left: -80px;
-      margin-right: -80px;
+      margin-left: -140px;
+      margin-right: -140px;
     }
     .arch-img {
       width: 100%;
       border-radius: 10px;
       border: 1px solid var(--border);
     }
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
       .arch-wrap { margin-left: 0; margin-right: 0; }
     }
 
@@ -178,7 +190,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.875rem;
+      font-size: 0.95rem;
     }
     thead tr { background: var(--surface); }
     th, td {
@@ -190,6 +202,10 @@
     th { font-weight: 600; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
     tr:hover td { background: rgba(88, 166, 255, 0.04); }
     .best { color: var(--accent2); font-weight: 700; }
+    .second { text-decoration: underline; font-weight: 600; }
+    .category-cell { text-align: center; vertical-align: middle; white-space: nowrap; border-right: 1px solid var(--border); }
+    .group-sep td { border-top: 2px solid var(--border) !important; }
+    th[colspan] { text-align: center; }
     .tag {
       display: inline-block;
       padding: 2px 8px;
@@ -214,10 +230,10 @@
       overflow: hidden;
     }
     .example-label {
-      padding: 10px 16px;
-      font-size: 0.8rem;
+      padding: 13px 18px;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
     .label-id { background: rgba(9,105,218,0.1); color: #0550ae; }
@@ -521,7 +537,7 @@
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <div class="hero">
-  <h1>DINO-R: Explainable Out-of-Distribution Detection for Autonomous Vehicles</h1>
+  <h1>Object-Aware and Explainable Out-of-Distribution Detection for Autonomous Vehicles</h1>
   <div class="author-block">
     <p class="authors">Jiamin Yin · Tianzi Chen · Yuanru Yang · Taohong Zheng · Yizhuo Xiao · Ning Zhang · Cheng Wang</p>
     <p class="affiliation">Heriot-Watt University</p>
@@ -550,15 +566,20 @@
   <section id="abstract">
     <h2>Abstract</h2>
     <p class="abstract-text">
-      Reliable <strong>out-of-distribution (OOD) detection</strong> is essential for the safe deployment of <strong>autonomous vehicles</strong>, yet most existing methods operate as black boxes and offer limited insight into why an input is flagged as anomalous. We propose <strong>DINO-R</strong>, a lightweight and explainable OOD detection framework that leverages frozen <strong>DINOv3 patch tokens</strong> and a small trainable <strong>transformer reconstructor</strong>. During training on <strong>in-distribution (ID)</strong> driving scenes only, the reconstructor learns to predict randomly masked feature tokens from their visible context. At inference, <strong>Monte-Carlo masking</strong> aggregates token-level reconstruction errors into a stable <strong>anomaly map</strong> and an image-level OOD score, jointly providing a detection decision and a spatially interpretable heatmap that highlights anomalous regions. On Cityscapes (ID) versus RoadAnomaly (OOD), DINO-R achieves an <strong>AUROC of 0.9945</strong> and <strong>FPR@95%TPR of 0.0302</strong>, outperforming kNN, Mahalanobis, and pixel-reconstruction baselines while requiring no OOD data for training or threshold calibration. Qualitative visualizations confirm that the produced <strong>anomaly maps</strong> consistently localize novel objects, offering human-verifiable evidence for runtime monitoring of autonomous driving perception.
+        Reliable out-of-distribution (OOD) detection is essential for the safe deployment of autonomous vehicles, yet most existing methods operate as black boxes and offer limited insight into why an input is flagged as anomalous. We propose <strong>DINO-R</strong>, a <strong>lightweight and explainable</strong>lightweight and explainable OOD detection framework that leverages frozen DINOv3 patch tokens and a small trainable transformer reconstructor. During training on in-distribution (ID) driving scenes only, the reconstructor learns to predict randomly masked feature tokens from their visible context. At inference, Monte-Carlo masking produces stable token-level errors, which are then processed by an <strong>object-aware risk scoring mechanism</strong> that groups tokens into pseudo-objects via spectral clustering and weights each object's contribution by four driving-relevance factors--<strong>saliency, proximity, corridor relevance, and a small-object bonus</strong>--to yield both an image-level OOD score and a spatially interpretable anomaly map. On our synthesized Cityscapes-S benchmark, DINO-R achieves an <strong>AUROC of 0.9772</strong> and <strong>FPR95 of 0.0300</strong>, substantially outperforming confidence-based methods, distance-based baselines, and the reconstruction-based MOODv2, while requiring no OOD data for training or threshold calibration. Qualitative visualizations confirm that the produced anomaly maps consistently localize novel objects that pose genuine threats to driving safety, offering human-verifiable evidence for runtime monitoring of autonomous driving perception.
     </p>
   </section>
 
   <!-- ═══════════════════════════ ARCHITECTURE ═══════════════════════════ -->
   <section id="architecture">
     <h2>Architecture</h2>
+    <p class="abstract-text">
+      Overview of the DINO-R framework. A frozen DINOv3 ViT-B/16 backbone extracts dense patch tokens from the input image.
+      <strong>Training:</strong> a lightweight transformer reconstructor learns to predict randomly masked tokens via cosine reconstruction loss on ID data only.
+      <strong>Inference:</strong> Monte-Carlo masking with <em>K</em> trials produces a token-level error map, which is further modulated by object-level importance scores derived from pseudo-object segmentation, yielding a risk-aware anomaly map and an image-level OOD score for both threshold-based decisions and spatially interpretable heatmap visualizations.
+    </p>
     <div class="arch-wrap">
-      <img class="arch-img" src="images/DINO-R.png" alt="DINO-R architecture diagram" />
+      <img class="arch-img" src="images/main.png" alt="DINO-R architecture diagram" />
     </div>
   </section>
 
@@ -567,24 +588,147 @@
     <h2>Qualitative Examples</h2>
     <div class="example-grid">
       <div class="example-card">
-        <div class="example-label label-id">ID — In-Distribution Scene — Cityscapes</div>
-        <img src="images/id1_grid.png" alt="ID example 1 with anomaly heatmap" />
-        <img src="images/id2_grid.png" alt="ID example 2 with anomaly heatmap" />
+        <div class="example-label label-id">ID — In-Distribution Scene</div>
+        <img src="images/ID.png" alt="ID examples with anomaly heatmap" />
+        <p class="example-caption">
+          Each panel contains four sub-images arranged in a 2×2 grid: the original image (top-left), the reconstruction error heatmap <em>e</em><sub>p</sub> (top-right), the pseudo-object segmentation with importance weighting <em>c</em><sub>p</sub> (bottom-left), and the weighted risk map <em>r</em><sub>p</sub> (bottom-right). In <em>c</em><sub>p</sub>, the bold white bounding box indicates the object with the highest importance weight.
+          The <strong>left two examples</strong> depict standard driving scenes and the <strong>right two</strong> include non-hazardous overlays, all yielding low risk scores.
+        </p>
       </div>
       <div class="example-card">
-        <div class="example-label label-ood">OOD — Out-of-Distribution Scene — RoadAnomaly21 / RoadObstacle21</div>
-        <img src="images/ood1_grid.png" alt="OOD example 1 with anomaly heatmap" />
-        <img src="images/ood2_grid.png" alt="OOD example 2 with anomaly heatmap" />
+        <div class="example-label label-ood">OOD — Out-of-Distribution Scene</div>
+        <img src="images/OOD.png" alt="OOD examples with anomaly heatmap" />
+        <p class="example-caption">
+          The <strong>left two examples</strong> are synthesized OOD scenes generated by adding anomalous overlays, while the <strong>right two</strong> are naturally occurring OOD instances detected in real-world driving imagery.
+          OOD examples exhibit substantially higher risk scores, with <em>e</em><sub>p</sub> and <em>r</em><sub>p</sub> clearly highlighting the anomalous regions.
+        </p>
       </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ RESULTS ═══════════════════════════ -->
+  <section id="results">
+    <h2>Experimental Results</h2>
+    <p class="abstract-text">
+      Comparison of OOD detection methods on synthesized CityScapes and nuScenes benchmarks.
+      Higher AUROC is better; lower FPR95 is better.
+      <strong>Bold</strong> indicates the best result and <u>underline</u> the second best.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th rowspan="2">Method</th>
+            <th colspan="2">CityScapes-S</th>
+            <th colspan="2">CityScapes-B</th>
+            <th colspan="2">nuScenes-S</th>
+            <th colspan="2">nuScenes-B</th>
+          </tr>
+          <tr>
+            <th>AUROC ↑</th><th>FPR95 ↓</th>
+            <th>AUROC ↑</th><th>FPR95 ↓</th>
+            <th>AUROC ↑</th><th>FPR95 ↓</th>
+            <th>AUROC ↑</th><th>FPR95 ↓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="category-cell" rowspan="8"><span class="tag tag-sup">Supervised</span></td>
+            <td>MSP</td>
+            <td>0.5450</td><td>0.9400</td>
+            <td>0.5305</td><td>0.9500</td>
+            <td>0.5588</td><td>0.9600</td>
+            <td>0.5668</td><td>0.9500</td>
+          </tr>
+          <tr>
+            <td>MaxLogit</td>
+            <td>0.5589</td><td>0.9500</td>
+            <td>0.5476</td><td>0.9600</td>
+            <td>0.5899</td><td>0.8700</td>
+            <td>0.5963</td><td>0.8600</td>
+          </tr>
+          <tr>
+            <td>Energy</td>
+            <td>0.5613</td><td>0.9500</td>
+            <td>0.5518</td><td>0.9600</td>
+            <td>0.6047</td><td>0.8700</td>
+            <td>0.6086</td><td>0.8500</td>
+          </tr>
+          <tr>
+            <td>Energy+React</td>
+            <td>0.5557</td><td>0.9300</td>
+            <td>0.5463</td><td>0.9500</td>
+            <td>0.6113</td><td>0.8800</td>
+            <td>0.6149</td><td>0.8500</td>
+          </tr>
+          <tr>
+            <td>ViM</td>
+            <td class="second">0.8430</td><td class="second">0.6800</td>
+            <td>0.7982</td><td>0.7500</td>
+            <td class="second">0.7470</td><td class="second">0.8400</td>
+            <td class="second">0.7507</td><td class="second">0.8300</td>
+          </tr>
+          <tr>
+            <td>GradNorm</td>
+            <td>0.5622</td><td>0.9500</td>
+            <td>0.5518</td><td>0.9600</td>
+            <td>0.6084</td><td>0.9100</td>
+            <td>0.6127</td><td>0.8900</td>
+          </tr>
+          <tr>
+            <td>KL-Matching</td>
+            <td>0.4888</td><td>0.9500</td>
+            <td>0.4812</td><td>0.9400</td>
+            <td>0.5535</td><td>0.9000</td>
+            <td>0.5558</td><td>0.8900</td>
+          </tr>
+          <tr>
+            <td>Mahalanobis</td>
+            <td>0.7900</td><td>0.7000</td>
+            <td>0.7637</td><td>0.7200</td>
+            <td>0.6619</td><td>0.9000</td>
+            <td>0.6685</td><td>0.9000</td>
+          </tr>
+          <tr class="group-sep">
+            <td class="category-cell" rowspan="4"><span class="tag tag-uns">Unsupervised</span></td>
+            <td>Mahalanobis-U</td>
+            <td>0.7878</td><td class="second">0.6800</td>
+            <td>0.7628</td><td class="second">0.7100</td>
+            <td>0.6546</td><td>0.9000</td>
+            <td>0.6621</td><td>0.9000</td>
+          </tr>
+          <tr>
+            <td>kNN (<em>k</em>=50)</td>
+            <td>0.6271</td><td>0.8800</td>
+            <td>0.6235</td><td>0.8800</td>
+            <td>0.5373</td><td>0.9400</td>
+            <td>0.5300</td><td>0.9400</td>
+          </tr>
+          <tr>
+            <td>MOODv2</td>
+            <td>0.9100</td><td>0.5200</td>
+            <td class="best">0.9893</td><td>0.0300</td>
+            <td>0.9538</td><td>0.1700</td>
+            <td>0.9839</td><td>0.0600</td>
+          </tr>
+          <tr>
+            <td><strong>DINO-R</strong></td>
+            <td class="best">0.9772</td><td class="best">0.0300</td>
+            <td class="second">0.9808</td><td class="best">0.0200</td>
+            <td class="best">0.9897</td><td class="best">0.0100</td>
+            <td class="best">0.9909</td><td class="best">0.0100</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- ═══════════════════════════ VIDEOS ═══════════════════════════ -->
   <section id="videos">
     <h2>Video Inference Demo</h2>
-    <p style="color:var(--muted);font-size:.9rem;margin-bottom:28px;max-width:700px;">
-      Each video shows the original frame alongside the real-time anomaly heatmap produced by DINO-R.
-      Warmer colors (red/orange) indicate higher anomaly scores. Select a dataset below, then navigate between clips.
+    <p class="abstract-text">
+      Each video is composed of two sections. The <strong style="color:var(--text);">top half</strong> shows three side-by-side panels: the original frame (left), the raw reconstruction error overlaid with pseudo-object clustering bounding boxes (center), and the final anomaly map (right). The <strong style="color:var(--text);">bottom half</strong> displays the EMA-smoothed risk score as a real-time curve over time, reflecting the model's frame-by-frame OOD confidence.
     </p>
 
     <!-- ── Dataset tabs (built dynamically from videos.json) ── -->
@@ -657,46 +801,6 @@
       </div>
 
     </div><!-- /.vp-card -->
-  </section>
-
-  <!-- ═══════════════════════════ RESULTS ═══════════════════════════ -->
-  <section id="results">
-    <h2>Experimental Results</h2>
-    <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;">
-      Evaluated on <strong style="color:var(--text)">RoadAnomaly21</strong> and
-      <strong style="color:var(--text)">RoadObstacle21</strong> from the SegmentMeIfYouCan benchmark,
-      with Cityscapes as the ID training set.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Method</th>
-            <th>AUROC ↑</th>
-            <th>FPR@95 ↓</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>MSP</td><td>0.4840</td><td>0.9148</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>MaxLogit</td><td>0.4322</td><td>0.9410</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>Energy</td><td>0.4052</td><td>0.9403</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>Energy + React</td><td>0.4085</td><td>0.9390</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>ViM</td><td>0.9939</td><td>0.0400</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>GradNorm</td><td>0.4343</td><td>0.9239</td></tr>
-          <tr><td><span class="tag tag-sup">Supervised</span></td><td>KL-Matching</td><td>0.5298</td><td>0.8866</td></tr>
-          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>DINO-K (kNN, k=1)</td><td>0.9820</td><td>0.0695</td></tr>
-          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>DINO-M (Mahalanobis)</td><td>0.9907</td><td>0.0439</td></tr>
-          <tr><td><span class="tag tag-uns">Unsupervised</span></td><td>MOOD-R (Pixel Recon.)</td><td>0.8038</td><td>0.6354</td></tr>
-          <tr>
-            <td><span class="tag tag-uns">Unsupervised</span></td>
-            <td><strong>DINO-R (Feature Recon.)</strong></td>
-            <td class="best">0.9945</td>
-            <td class="best">0.0302</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </section>
 
 </div><!-- /container -->
