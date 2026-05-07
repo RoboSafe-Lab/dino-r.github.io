@@ -3,7 +3,7 @@
     {
       "id": "cityscapes",
       "label": "Cityscapes",
-      "desc": "",
+      "desc": "leftImg8bit demoVideo",
       "videos": [
         {
           "src": "videos/cityscapes/cityscapes_00_ood.mp4"
@@ -19,23 +19,38 @@
     {
       "id": "nuscenes",
       "label": "nuScenes",
-      "desc": "",
+      "desc": "choose from nuScenes-trainval01",
       "videos": [
         {
-          "src": "videos/nuscenes/n008_CAM_FRONT_part00_ood.mp4"
+          "src": "videos/nuscenes/0.mp4"
         },
         {
-          "src": "videos/nuscenes/n008_CAM_FRONT_part01_ood.mp4"
+          "src": "videos/nuscenes/1.mp4"
         },
         {
-          "src": "videos/nuscenes/n008_CAM_FRONT_part02_ood.mp4"
+          "src": "videos/nuscenes/2.mp4"
+        },
+        {
+          "src": "videos/nuscenes/3.mp4"
+        },
+        {
+          "src": "videos/nuscenes/4.mp4"
+        },
+        {
+          "src": "videos/nuscenes/5.mp4"
+        },
+        {
+          "src": "videos/nuscenes/6.mp4"
+        },
+        {
+          "src": "videos/nuscenes/7.mp4"
         }
       ]
     },
     {
       "id": "bdd100k",
       "label": "bdd100k",
-      "desc": "",
+      "desc": "choose from bdd100k_videos_test_00",
       "videos": [
         {
           "src": "videos/bdd100k/0.mp4"
