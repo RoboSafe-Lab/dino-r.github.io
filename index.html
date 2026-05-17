@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DINO-R: Explainable Out-of-Distribution Detection for Autonomous Vehicles</title>
+  <title>DINO-R</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -565,7 +565,7 @@
   <section id="abstract">
     <h2>Abstract</h2>
     <p class="abstract-text">
-        Reliable out-of-distribution (OOD) detection is essential for the safe deployment of autonomous vehicles, yet most existing methods operate as black boxes and offer limited insight into why an input is flagged as anomalous. We propose <strong>DINO-R</strong>, a <strong>lightweight and explainable</strong> lightweight and explainable OOD detection framework that leverages frozen DINOv3 patch tokens and a small trainable transformer reconstructor. During training on in-distribution (ID) driving scenes only, the reconstructor learns to predict randomly masked feature tokens from their visible context. At inference, Monte-Carlo masking produces stable token-level errors, which are then processed by an <strong>object-aware risk scoring mechanism</strong> that groups tokens into pseudo-objects via spectral clustering and weights each object's contribution by four driving-relevance factors--<strong>saliency, proximity, corridor relevance, and a small-object bonus</strong>--to yield both an image-level OOD score and a spatially interpretable anomaly map. On our synthesized Cityscapes-S benchmark, DINO-R achieves an <strong>AUROC of 0.9772</strong> and <strong>FPR95 of 0.0300</strong>, substantially outperforming confidence-based methods, distance-based baselines, and the reconstruction-based MOODv2, while requiring no OOD data for training or threshold calibration. Qualitative visualizations confirm that the produced anomaly maps consistently localize novel objects that pose genuine threats to driving safety, offering human-verifiable evidence for runtime monitoring of autonomous driving perception.
+        Reliable out-of-distribution (OOD) detection is essential for safe autonomous driving, yet most existing methods are black-box and offer limited insight into why an input is flagged. We propose <strong>DINO-R</strong>, a <strong>lightweight and explainable OOD detection framework</strong> that couples frozen DINOv3 patch tokens with a small trainable transformer reconstructor, trained on <strong>in-distribution driving scenes only</strong>. At inference, Monte Carlo masking produces stable token-level reconstruction errors. These errors are aggregated by an <strong>object-aware risk scoring mechanism</strong> that groups tokens into pseudo-objects via spectral clustering and weights each object using <strong>four driving-relevance factors</strong>, yielding both an image-level OOD score and a spatially interpretable anomaly map. Across <strong>four synthesized benchmarks based on Cityscapes and nuScenes</strong>, DINO-R achieves the best overall performance and uniquely sustains consistent results across the safety-critical and benign settings, distinguishing genuinely hazardous objects from benign distractors. On real-world <strong>BDD100K</strong> driving videos, temporal aggregation further produces coherent signals on naturally occurring OOD events, offering human-verifiable evidence for runtime perception monitoring.
     </p>
   </section>
 
